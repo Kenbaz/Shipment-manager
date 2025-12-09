@@ -1,0 +1,1 @@
+export { shipmentRepository } from './shipmentRepository';
