@@ -6,7 +6,6 @@ A production-ready RESTful API for managing shipments built with Node.js, Expres
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.x-green)
 ![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
-![License](https://img.shields.io/badge/License-ISC-yellow)
 
 ## 🌐 Live Demo
 
@@ -419,14 +418,6 @@ cancelled  cancelled
   }
 }
 ```
-
----
-
-## 📄 License
-
-This project is licensed under the ISC License.
-
----
 
 ## 👤 Author
 
