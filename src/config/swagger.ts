@@ -47,7 +47,7 @@ This API currently does not require authentication. Future versions may include 
         description: "Development server",
       },
       {
-        url: "https://production-url.com",
+        url: "https://shipment-manager-production-6810.up.railway.app",
         description: "Production server",
       },
     ],
