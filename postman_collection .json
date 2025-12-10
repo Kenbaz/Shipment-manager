@@ -1,0 +1,471 @@
+{
+  "info": {
+    "_postman_id": "shipment-api-collection",
+    "name": "Shipment Management API",
+    "description": "A production-ready RESTful API for managing shipments built with Node.js, Express, TypeScript, and MongoDB.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://shipment-manager-production-6810.up.railway.app",
+      "type": "string"
+    },
+    {
+      "key": "shipmentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Returns the health status of the API and database connection."
+          },
+          "response": []
+        },
+        {
+          "name": "Readiness Probe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/ready",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "ready"]
+            },
+            "description": "Checks if the API is ready to accept requests (database connected)."
+          },
+          "response": []
+        },
+        {
+          "name": "Liveness Probe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health/live",
+              "host": ["{{baseUrl}}"],
+              "path": ["health", "live"]
+            },
+            "description": "Simple liveness check - returns 200 if the server is running."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Shipments",
+      "item": [
+        {
+          "name": "Get All Shipments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments?page=1&limit=10&sortBy=createdAt&order=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (max 100)"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Field to sort by"
+                },
+                {
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order (asc/desc)"
+                },
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "Filter by status",
+                  "disabled": true
+                },
+                {
+                  "key": "origin",
+                  "value": "Lagos",
+                  "description": "Filter by origin (partial match)",
+                  "disabled": true
+                },
+                {
+                  "key": "destination",
+                  "value": "Abuja",
+                  "description": "Filter by destination (partial match)",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "John",
+                  "description": "Search in sender/receiver names",
+                  "disabled": true
+                },
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01",
+                  "description": "Filter by creation date (from)",
+                  "disabled": true
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-12-31",
+                  "description": "Filter by creation date (to)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retrieve all shipments with pagination, filtering, and sorting."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Shipment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Retrieve a single shipment by its ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Shipment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.id) {",
+                  "    pm.collectionVariables.set('shipmentId', jsonData.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderName\": \"John Doe\",\n  \"receiverName\": \"Jane Smith\",\n  \"origin\": \"Lagos, Nigeria\",\n  \"destination\": \"Abuja, Nigeria\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments"]
+            },
+            "description": "Create a new shipment. The tracking number is auto-generated."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Shipment (with status)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderName\": \"Alice Johnson\",\n  \"receiverName\": \"Bob Williams\",\n  \"origin\": \"Port Harcourt, Nigeria\",\n  \"destination\": \"Kano, Nigeria\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments"]
+            },
+            "description": "Create a new shipment with explicit status."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Shipment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"receiverName\": \"Jane Doe Updated\",\n  \"destination\": \"Ibadan, Nigeria\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Update an existing shipment's details."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Status - To In Transit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_transit\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Update shipment status from pending to in_transit."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Status - To Delivered",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"delivered\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Update shipment status from in_transit to delivered."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Status - To Cancelled",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"cancelled\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Cancel a shipment (from pending or in_transit)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Shipment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Delete a shipment by its ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "Get Shipment - Invalid ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/invalid-id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "invalid-id"]
+            },
+            "description": "Test invalid MongoDB ObjectId format."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Shipment - Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/507f1f77bcf86cd799439011",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "507f1f77bcf86cd799439011"]
+            },
+            "description": "Test non-existent shipment ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Shipment - Missing Fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderName\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments"]
+            },
+            "description": "Test validation error for missing required fields."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Shipment - Invalid Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderName\": \"John Doe\",\n  \"receiverName\": \"Jane Smith\",\n  \"origin\": \"Lagos, Nigeria\",\n  \"destination\": \"Abuja, Nigeria\",\n  \"status\": \"invalid_status\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments"]
+            },
+            "description": "Test validation error for invalid status value."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Shipment - Empty Body",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Test validation error for empty update body."
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Status Transition",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments", "{{shipmentId}}"]
+            },
+            "description": "Test invalid status transition (e.g., delivered -> pending)."
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Query Parameters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipments?status=invalid_status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "shipments"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "invalid_status"
+                }
+              ]
+            },
+            "description": "Test invalid status query parameter."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
