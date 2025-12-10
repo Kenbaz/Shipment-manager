@@ -24,7 +24,7 @@
   },
   "include": [
     "src/**/*"
-, "src/config/jest.config.js"  ],
+, "jest.config.js"  ],
   "exclude": [
     "node_modules",
     "dist",

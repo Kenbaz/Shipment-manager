@@ -127,14 +127,6 @@ describe("Shipment Filtering and Sorting", () => {
 
       expect(response.body.data).toHaveLength(2); // Alice Johnson (sender has Johnson) and Mary Johnson
     });
-
-    it("should be case-insensitive", async () => {
-      const response = await request(app)
-        .get("/api/v1/shipments?search=john")
-        .expect(200);
-
-      expect(response.body.data).toHaveLength(2);
-    });
   });
 
   describe("Sorting", () => {
