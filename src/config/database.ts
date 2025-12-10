@@ -53,7 +53,7 @@ class Database implements DatabaseConnection {
 
     const mongoOptions: mongoose.ConnectOptions = {
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 20000,
       socketTimeoutMS: 45000,
     };
 
