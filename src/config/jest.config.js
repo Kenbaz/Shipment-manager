@@ -6,21 +6,31 @@ const config = {
   // Test environment
   testEnvironment: "node",
 
-  // Root directory for tests
+  // Root directories for tests
   roots: ["<rootDir>/tests"],
 
   // Test file patterns
-  testMatch: ["**/*.test.ts", "**/*.spec.ts"],
+  testMatch: ["**/tests/**/*.test.ts", "**/tests/**/*.spec.ts"],
 
   // Module file extensions
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 
   // Transform Typescript files using ts-jest
   transform: {
-    "^.+\\.tsx?$": [
+    "^.+\\.ts$": [
       "ts-jest",
       {
-        tsconfig: "tsconfig.json",
+        useESM: false,
+        isolatedModules: true,
+        tsconfig: {
+          target: "ES2020",
+          module: "CommonJS",
+          moduleResolution: "Node",
+          esModuleInterop: true,
+          strict: true,
+          skipLibCheck: true,
+          resolveJsonModule: true,
+        },
       },
     ],
   },
