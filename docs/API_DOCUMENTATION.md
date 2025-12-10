@@ -16,8 +16,6 @@ The Shipment Management API is a RESTful service for creating, reading, updating
 
 This API currently does not require authentication. All endpoints are publicly accessible.
 
-> **Note:** In a production environment, you would typically add JWT-based authentication or API key authentication.
-
 ---
 
 ## Rate Limiting
