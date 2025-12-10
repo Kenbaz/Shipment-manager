@@ -61,6 +61,8 @@ export const validateRequest = (
 
         // Replace the original data with the validated and sanitized data
         req[source] = value;
+
+        next();
     };
 };
 
