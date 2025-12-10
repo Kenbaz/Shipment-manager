@@ -77,7 +77,7 @@ const shipmentSchema = new Schema<ShipmentDocument>(
 
 // Compound indexes for common queries
 shipmentSchema.index({ status: 1, createdAt: -1 });
-shipmentSchema.index({ originAddress: 1, destinationAddress: 1 });
+shipmentSchema.index({ origin: 1, destination: 1 });
 shipmentSchema.index({ senderName: 'text', receiverName: 'text' });
 
 
