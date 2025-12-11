@@ -18,7 +18,11 @@ export const createApp = (): Express => {
     // Apply security middlewares
     app.use(helmetMiddleware);
     app.use(corsMiddleware);
-    app.use(rateLimitMiddleware);
+    
+    // Skip rate limiting in test environment
+    if (!environment.isTest) {
+        app.use(rateLimitMiddleware);
+    }
 
     // Apply request parsing middlewares
 
