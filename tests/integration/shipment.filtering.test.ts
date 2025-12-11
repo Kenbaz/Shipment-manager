@@ -117,7 +117,8 @@ describe("Shipment Filtering and Sorting", () => {
         .get("/api/v1/shipments?search=John")
         .expect(200);
 
-      expect(response.body.data).toHaveLength(2); // John Doe and John Smith
+      // Matches: John Doe, Alice Johnson (contains "John"), John Smith
+      expect(response.body.data).toHaveLength(3);
     });
 
     it("should search by receiver name", async () => {

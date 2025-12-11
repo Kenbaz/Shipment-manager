@@ -102,9 +102,9 @@ describe('Shipment CRUD Operations', () => {
         });
 
         it('should return empty array when no shipments exist', async () => {
-            // Clear shipments
-            const mongoose = await import('mongoose');
-            await mongoose.connection.collection('shipments').deleteMany({});
+            // Clear shipments using the model's collection
+            const { ShipmentModel } = await import('../../src/models/index');
+            await ShipmentModel.deleteMany({});
 
             const response = await request(app)
                 .get('/api/v1/shipments')
