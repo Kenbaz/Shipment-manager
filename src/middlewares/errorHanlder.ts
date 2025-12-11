@@ -83,8 +83,8 @@ export const errorHandler: ErrorRequestHandler = (
     _next: NextFunction
 ): void => {
     // Log error in development
-    if (!environment.isProduction) {
-        console.error('Error:', error);
+    if (!environment.isProduction && !environment.isTest) {
+      console.error("Error:", error);
     }
 
     // Normalize the error to ApiError
