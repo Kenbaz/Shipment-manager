@@ -213,7 +213,7 @@ Visit `https://shipment-manager-production-6810.up.railway.app/api-docs` for int
 ## 📁 Project Structure
 
 ```
-shipment-api/
+shipment-manager/
 ├── src/
 │   ├── config/          # Configuration files
 │   │   ├── database.ts  # MongoDB connection
